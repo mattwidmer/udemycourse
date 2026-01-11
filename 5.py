@@ -1,31 +1,61 @@
-#4 Rock Paper Scissors Using Lists
-
+#Password Generator
 import random
 
-choice = input("What do you choose? Rock, Paper, or Scissors? ")
+#get inputs for how many of each they want
+letterbudget = int(input("How Many Letters do You Want? 1, 2, 3, 4, 5 "))
+numberbudget = int(input("How Many Numbers do You Want? 1, 2, 3, 4, 5 "))
+characterbudget = int(input("How Many Special Characters do You Want? 1, 2, 3, 4, 5 "))
 
-computerchoice = random.randint(1,3)
+totalcharacters = letterbudget + numberbudget + characterbudget
+#print(totalcharacters)
 
-if choice == "Rock":
-    if computerchoice == 2:
-        print("The computer played Paper! You lost.")
-    elif computerchoice == 3:
-        print("The computer played scissors! You won!")
+letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+special_characters = ["!", "@", "#", "$", "%", "^", "&", "*"]
+
+password = []
+
+#checking for which to use if the budget is used up
+number_in_budget = (numberbudget > 0) and (numberbudget >= letterbudget) and (numberbudget >= characterbudget)
+letter_in_budget = (letterbudget > 0) and (letterbudget >= numberbudget) and (letterbudget >= characterbudget)
+character_in_budget = (characterbudget > 0) and (characterbudget >= letterbudget) and (characterbudget >= numberbudget)
+
+#generate it letter by letter but with another for loop to 
+#generate it letter by letter
+for character in range(1,(totalcharacters + 1)):
+    random_integer = random.randint(1,3)
+    if (random_integer == 1) and (letter_in_budget == True):
+        #set new random integer to pick a random letter
+        random_integer = random.randint(0,25)
+        #grab letter from list
+        character = letters[random_integer]
+        print("Picked: " + str(character))
+        password.append(character)
+        letterbudget -= 1
+        letter_in_budget = (letterbudget > 0) and (letterbudget >= numberbudget) and (letterbudget >= characterbudget)
+        print("Current letter budget: " + str(letterbudget))
+    elif (random_integer == 2) and (number_in_budget == True):
+        #set new random integer to pick a random number
+        random_integer = random.randint(0,8)
+        #grab number from list
+        character = numbers[random_integer]
+        print("Picked: " + str(character))
+        password.append(character)
+        numberbudget -= 1
+        number_in_budget = (numberbudget > 0) and (numberbudget >= letterbudget) and (numberbudget >= characterbudget)
+        print("Current number budget: " + str(numberbudget))
+    elif (random_integer == 3) and (character_in_budget == True):
+        #set new random integer to pick a random special character
+        random_integer = random.randint(0,7)
+        #grab special character from list
+        character = special_characters[random_integer]
+        print("Picked: " + str(character))
+        password.append(character)
+        characterbudget -= 1
+        character_in_budget = (characterbudget > 0) and (characterbudget >= letterbudget) and (characterbudget >= numberbudget)
+        print("Current character budget: " + str(characterbudget))
     else:
-        print("The computer played rock! You tied.")
-elif choice == "Paper":
-    if computerchoice == 2:
-        print("The computer played Paper! You tied.")
-    elif computerchoice == 3:
-        print("The computer played scissors! You lost.")
-    else:
-        print("The computer played rock! You won!")
-elif choice == "Scissors":
-    if computerchoice == 2:
-        print("The computer played Paper! You wont!")
-    elif computerchoice == 3:
-        print("The computer played scissors! You tied.")
-    else:
-        print("The computer played rock! You lost.")
-else:
-    print("Try typing Rock, Paper, or Scissors")
+        print("Error randomly choosing between numbers, letters, and characters.")
+
+#print using custom * operator to format it
+print(*password, sep = '')
